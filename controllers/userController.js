@@ -70,7 +70,7 @@ const updateAvatar = async (req, res) => {
 
 const updatePassword = async (req, res) => {
   try {
-    const password = bcrypt.hash(req.body.password, 10);
+    const password = await bcrypt.hash(req.body.password, 10);
     const id = req.params.id;
     const count = await updatePass(id, password);
     if (count > 0) {
