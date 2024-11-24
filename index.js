@@ -2,7 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const path = require("path");
 const sequelize = require("./config/dbConfig");
+const authRoute = require("./routes/authRoute");
+const userRoute = require("./routes/userRoute");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -10,6 +13,7 @@ const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(morgan("combined"));
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cors());
 
 app.use((req, res, next) => {
@@ -24,6 +28,9 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+app.use("/api/v1/users", userRoute);
+app.use("/api/v1", authRoute);
 
 sequelize
   .authenticate()

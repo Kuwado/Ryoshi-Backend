@@ -6,7 +6,7 @@
 2. [MySQL](https://www.mysql.com/downloads/)
 3. [Postman](https://www.postman.com/downloads/)
 
-**Cài đặt**
+**Cài đặt khi clone về lần đầu tiên**
 
 1. Tại thư mục dự án ngang hàng với index.js tạo file .env giống như file .env.example và điền mật khẩu mysql của bản thân mình, ví dụ mật khẩu là abc thì điền DB_PASS= 'abc'
 2. Tại terminal chạy `npm i` để tải các thư viện cần thiết
@@ -14,4 +14,9 @@
 4. Sau đó chạy câu lệnh `npm start` -> kết nối thành công sẽ hiện thông báo như sau:
    ![chạy backend thành công](./assets/images/image.png)
 
-**_Lưu ý:_** _1 và 3 chỉ chạy lần đầu tiên khi clone project về, 2 và 4 chạy mỗi khi git pull code mới về_
+**Cài đặt khi pull code mới về**
+
+1. Chạy câu lệnh `npm i`
+2. Kiểm tra xem file .env.example có gì mới không để thêm các biến môi trường vào file .env của mình
+3. Chạy câu lệnh `npx sequelize-cli db:migrate`
+4. Cuối cùng chạy câu lệnh `npm start`
