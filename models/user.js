@@ -55,6 +55,10 @@ module.exports = (sequelize, DataTypes) => {
       children_ages: {
         type: DataTypes.STRING,
       },
+      role: {
+        type: DataTypes.ENUM("admin", "user", "guest"),
+        defaultValue: "user",
+      },
     },
     {
       sequelize,
