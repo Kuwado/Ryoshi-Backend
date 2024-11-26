@@ -97,6 +97,7 @@ const forgotPassword = async (req, res) => {
   try {
     const password = await bcrypt.hash(req.body.password, 10);
     const email = req.body.email;
+    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const count = await forgotPass(email, password);
     if (count > 0) {
       return res.status(200).json({

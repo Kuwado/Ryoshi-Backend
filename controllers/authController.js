@@ -1,4 +1,6 @@
+require("dotenv").config();
 const { createUser, checkUserExist } = require("../queries/authQuery");
+const transporter = require("../middlewares/mailMiddleware");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -63,8 +65,30 @@ const checkAccountExist = async (req, res) => {
   try {
     const userData = req.body;
     const userExist = await checkUserExist(userData);
-    if (userExist) return res.status(200).json({ message: "Email exists" });
-    res.status(400).json({ error: "Account not found" });
+    if (!userExist) {
+      return res.status(404).json({
+        message: "Email not found",
+      });
+    }
+    const token = jwt.sign({ email: userData.email }, process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
+    const mailOptions = {
+      from: process.env.GMAIL,
+      to: userData.email,
+      subject: "Mã xác nhận đổi mật khẩu",
+      text: `Mã xác nhận của bạn là: ${token}. Hãy nhập mã này để đổi mật khẩu.`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error sending email: ", error);
+        return res.status(500).json({ message: "Send code to email error" });
+      }
+      res
+        .status(200)
+        .json({ message: "Code has been sent, please check your email" });
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({

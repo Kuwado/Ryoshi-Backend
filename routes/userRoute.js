@@ -10,10 +10,10 @@ const {
   forgotPassword,
 } = require("../controllers/userController");
 
+route.put("/forgotPassword", forgotPassword);
 route.get("/:id", authenticateToken, getUserInfo);
 route.put("/:id", authenticateToken, updateUserInfo);
 route.put("/password/:id", authenticateToken, updatePassword);
-route.put("/forgotPassword", forgotPassword);
 route.put("/ava/:id", authenticateToken, upload.single("file"), updateAvatar);
 
 module.exports = route;
