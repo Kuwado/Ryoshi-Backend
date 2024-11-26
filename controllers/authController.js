@@ -58,4 +58,21 @@ const checkLogin = async (req, res) => {
     });
   }
 };
-module.exports = { createNewUser, checkLogin };
+
+const checkAccountExist = async (req, res) => {
+  try {
+    const userData = req.body;
+    const userExist = await checkUserExist(userData);
+    if (userExist) return res.status(200).json({ message: "Email exists" });
+    res.status(400).json({ error: "Account not found" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      error:
+        error.errors && error.errors.length > 0
+          ? error.errors[0].message
+          : "Something went wrong",
+    });
+  }
+};
+module.exports = { createNewUser, checkLogin, checkAccountExist };
