@@ -39,4 +39,12 @@ const updatePass = async (id, newPass) => {
   return count;
 };
 
-module.exports = { updateUser, getUser, updateAva, updatePass };
+const forgotPass = async (email, newPass) => {
+  const [count] = await db.User.update(
+    { password: newPass },
+    { where: { email: email } }
+  );
+  return count;
+};
+
+module.exports = { updateUser, getUser, updateAva, updatePass, forgotPass };

@@ -7,11 +7,13 @@ const {
   getUserInfo,
   updateAvatar,
   updatePassword,
+  forgotPassword,
 } = require("../controllers/userController");
 
 route.get("/:id", authenticateToken, getUserInfo);
 route.put("/:id", authenticateToken, updateUserInfo);
 route.put("/password/:id", authenticateToken, updatePassword);
+route.put("/forgotPassword", forgotPassword);
 route.put("/ava/:id", authenticateToken, upload.single("file"), updateAvatar);
 
 module.exports = route;
