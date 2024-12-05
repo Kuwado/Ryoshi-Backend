@@ -1,6 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -59,6 +60,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM("admin", "user", "guest"),
         defaultValue: "user",
       },
+      resetPasswordToken: {
+        type: DataTypes.STRING,
+      },
+      resetPasswordExpire: {
+        type: DataTypes.DATE,
+      },
     },
     {
       sequelize,
@@ -72,5 +79,15 @@ module.exports = (sequelize, DataTypes) => {
     const saltRounds = 10;
     user.password = await bcrypt.hash(user.password, saltRounds);
   });
+  // User.prototype.createResetPasswordToken = function () {
+  //   const resetToken = crypto.randomBytes(32).toString("hex");
+  //   this.resetPasswordToken = crypto
+  //     .createHash("sha256")
+  //     .update(resetToken)
+  //     .digest("hex");
+  //   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+  //   console.log(resetToken, this.resetPasswordToken);
+  //   return resetToken;
+  // };
   return User;
 };
