@@ -8,7 +8,6 @@ const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRoute");
 const tagRoute = require("./routes/tagRoute");
 const locationRoute = require("./routes/locationRoute");
-const locationPriceRoute = require("./routes/locationPriceRoute");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -34,7 +33,6 @@ app.use((req, res, next) => {
 
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/locations", locationRoute);
-app.use("/api/v1/location-prices", locationPriceRoute);
 app.use("/api/v1/tags", tagRoute);
 app.use("/api/v1", authRoute);
 

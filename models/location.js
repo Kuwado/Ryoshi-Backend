@@ -11,8 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       location.hasMany(models.location_price, {
         foreignKey: "location_id",
         as: "location_price",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       });
     }
   }
@@ -23,10 +21,12 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: false,
         allowNull: false,
+        defaultValue: DataTypes.UUIDV4,
       },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       description: {
         type: DataTypes.TEXT,
@@ -71,8 +71,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      paranoid: true,
-      timestamps: true,
       tableName: "location",
       modelName: "location",
     }

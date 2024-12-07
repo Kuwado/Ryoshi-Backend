@@ -13,6 +13,7 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       description: {
         type: Sequelize.TEXT,
@@ -55,12 +56,12 @@ module.exports = {
         type: Sequelize.BIGINT,
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn("NOW"),
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn("NOW"),
       },

@@ -10,8 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       location_price.belongsTo(models.location, {
-        foreignKey: 'location_id',
-        as: 'location',
+        foreignKey: "location_id",
+        as: "location",
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+        hooks: true,
       });
     }
   }
@@ -21,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         primaryKey: true,
         autoIncrement: false,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false,
       },
       type: {
@@ -34,13 +38,15 @@ module.exports = (sequelize, DataTypes) => {
         references: {
           model: "location",
           key: "location_id",
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE',
+          onUpdate: "CASCADE",
+          onDelete: "CASCADE",
         },
       },
     },
     {
       sequelize,
+      timestamps: false,
+      paranoid: false,
       tableName: "location_price",
       modelName: "location_price",
     }

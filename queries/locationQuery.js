@@ -2,27 +2,12 @@ const { where } = require("sequelize");
 const db = require("../models/index");
 
 const getLocations = async () => {
-  const locations = await db.location.findAll({
-    include: [
-      {
-        model: db.location_price,
-        as: "location_price",
-      },
-    ],
-  });
+  const locations = await db.location.findAll();
   return locations;
 };
 
 const getALocation = async (id) => {
-  const location = await db.location.findById({
-    where: { id: id },
-    include: [
-      {
-        model: db.location_price,
-        as: "location_price",
-      },
-    ],
-  });
+  const location = await db.location.findByPk(id);
   return location;
 };
 
@@ -33,14 +18,14 @@ const createLocation = async (locationData) => {
 
 const updateLocation = async (id, locationData) => {
   const [count] = await db.location.update(locationData, {
-    where: { id: id },
+    where: { location_id: id },
   });
   return count;
 };
 
 const deleteLocation = async (id) => {
-  const [count] = await db.location.detroy({
-    where: { id: id },
+  const count = await db.location.destroy({
+    where: { location_id: id },
   });
   return count;
 };

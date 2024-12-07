@@ -40,7 +40,7 @@ const insertLocation = async (req, res) => {
       ...req.body,
       images:
         req.files && req.files.length >= 1
-          ? req.files.map((file) => `${file.filename}`)
+          ? req.files.map((file) => file.filename).join(",")
           : null,
     };
     const location = await createLocation(locationData);
@@ -57,14 +57,17 @@ const insertLocation = async (req, res) => {
 
 const updateLocationDetail = async (req, res) => {
   try {
-    const locationData = {
-      ...req.body,
-      images:
-        req.files && req.files.length >= 1
-          ? req.files.map((file) => `${file.filename}`)
-          : null,
-    };
-    const count = updateLocation(req.params.id, locationData);
+    let locationData = {};
+    if (req.files) {
+      locationData = {
+        ...req.body,
+        images:
+          req.files && req.files.length >= 1
+            ? req.files.map((file) => file.filename).join(",")
+            : null,
+      };
+    } else locationData = req.body;
+    const count = await updateLocation(req.params.id, locationData);
     if (count == 0) {
       return res.status(200).json({
         message: "Location not changed",
@@ -85,7 +88,7 @@ const deleteALocation = async (req, res) => {
     const count = await deleteLocation(req.params.id);
     if (count == 0) {
       return res.status(400).json({
-        message: "Can not delete location",
+        message: "Can not delete location, location not found",
       });
     }
     res.status(200).json({
