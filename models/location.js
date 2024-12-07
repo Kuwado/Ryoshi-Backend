@@ -8,9 +8,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      location.hasMany(models.location_price, {
+      location.belongsToMany(models.User, {
+        through: models.Liked,
         foreignKey: "location_id",
-        as: "location_price",
+        as: "liked_users",
+        onDelete: "CASCADE",
       });
     }
   }
@@ -61,6 +63,12 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isInt: true,
         },
+      },
+      adult_price: {
+        type: DataTypes.FLOAT,
+      },
+      child_price: {
+        type: DataTypes.FLOAT,
       },
       images: {
         type: DataTypes.TEXT,

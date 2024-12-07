@@ -49,6 +49,12 @@ module.exports = {
           isInt: true,
         },
       },
+      adult_price: {
+        type: Sequelize.FLOAT,
+      },
+      child_price: {
+        type: Sequelize.FLOAT,
+      },
       images: {
         type: Sequelize.TEXT,
       },

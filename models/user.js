@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.belongsToMany(models.location, {
+        through: models.Liked,
+        foreignKey: "user_id",
+        as: "liked_location",
+        onDelete: "CASCADE",
+      });
     }
   }
   User.init(
