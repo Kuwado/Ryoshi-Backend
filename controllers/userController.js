@@ -5,7 +5,9 @@ const {
   updatePass,
   forgotPass,
 } = require("../queries/userQuery");
+const { getLocations } = require("../queries/locationQuery");
 const bcrypt = require("bcrypt");
+const getDistance = require("../utils/distanceMiddleware");
 
 const getUserInfo = async (req, res) => {
   const id = req.params.id;
@@ -117,10 +119,39 @@ const forgotPassword = async (req, res) => {
     });
   }
 };
+
+const getDistanceFromLocation = async (req, res) => {
+  try {
+    const user = await getUser(req.params.id);
+    const userAddress = user.address;
+    const locations = await getLocations();
+    const distances = [];
+    for (let location of locations) {
+      const locationAddress = location.address;
+      const distance = await getDistance(userAddress, locationAddress);
+      distances.push({
+        location_id: location.location_id,
+        name: location.name,
+        address: location.address,
+        distance: distance,
+      });
+    }
+    res.status(200).json({
+      message: "Get distance from all locations to user",
+      distances: distances,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   updateUserInfo,
   getUserInfo,
   updateAvatar,
   updatePassword,
   forgotPassword,
+  getDistanceFromLocation,
 };

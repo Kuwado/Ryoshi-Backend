@@ -22,7 +22,7 @@ module.exports = {
         description: "地域の伝統や文化を体験する旅行",
       },
       {
-        name: "リゾート\n",
+        name: "リゾート",
         description: "快適な施設でリラックスできる贅沢な旅行",
       },
       {
@@ -38,7 +38,7 @@ module.exports = {
         description: "未知の場所や自然を探索する冒険的な旅行",
       },
       {
-        name: "冒険\n",
+        name: "冒険",
         description: "スリルや挑戦を求めるアクティブな旅行",
       },
       {
@@ -50,7 +50,7 @@ module.exports = {
         description: "家族全員で楽しむ思い出作りのための旅行",
       },
       {
-        name: "団体旅行\n",
+        name: "団体旅行",
         description: "グループで一緒に楽しむ計画的な旅行",
       },
       {
