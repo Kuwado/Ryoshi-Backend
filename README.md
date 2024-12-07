@@ -34,3 +34,4 @@
 3. Trong phần .env.example có 2 phần email_user, email_pass thì thay bằng phần user và pass theo như ảnh
    ![image](https://github.com/user-attachments/assets/02769c1f-1ea9-4bb4-a735-d9ce381cc49f)
 ** Lưu ý: Sửa thời gian chính xác ở mail trap để thời gian hết hạn của otp được lưu chính xác trong db**
+** Không bật xác thực 2 lớp**
