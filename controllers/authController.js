@@ -1,11 +1,13 @@
 require("dotenv").config();
-const { createUser, checkUserExist } = require("../queries/authQuery");
-const transporter = require("../middlewares/mailMiddleware");
-const db = require("../models/index"); // Đảm bảo rằng db đã được cấu hình đúng cách
+const {
+  createUser,
+  checkUserExist,
+  saveUser,
+  updatePassword,
+} = require("../queries/authQuery");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const asyncErrorHandler = require("../middlewares/asyncErrorHandler");
-const transporters = require("../config/email"); // Đảm bảo bạn đã cấu hình transporter
+const transporters = require("../config/email");
 
 const createNewUser = async (req, res) => {
   try {
@@ -15,7 +17,7 @@ const createNewUser = async (req, res) => {
       return res.status(400).json({ error: newUser.message });
     }
     const token = jwt.sign(
-      { id: userExist.id, role: userExist.role },
+      { id: newUser.id, role: newUser.role },
       process.env.JWT_SECRET,
       {
         expiresIn: "30d",
@@ -72,61 +74,18 @@ const checkLogin = async (req, res) => {
   }
 };
 
-const checkAccountExist = async (req, res) => {
-  try {
-    const userData = req.body;
-    const userExist = await checkUserExist(userData);
-    if (!userExist) {
-      return res.status(404).json({
-        message: "Email not found",
-      });
-    }
-    const token = jwt.sign({ email: userData.email }, process.env.JWT_SECRET, {
-      expiresIn: "15m",
-    });
-    const mailOptions = {
-      from: process.env.GMAIL,
-      to: userData.email,
-      subject: "Mã xác nhận đổi mật khẩu",
-      text: `Mã xác nhận của bạn là: ${token}. Hãy nhập mã này để đổi mật khẩu.`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log("Error sending email: ", error);
-        return res.status(500).json({ message: "Send code to email error" });
-      }
-      res
-        .status(200)
-        .json({ message: "Code has been sent, please check your email" });
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      error:
-        error.errors && error.errors.length > 0
-          ? error.errors[0].message
-          : "Something went wrong",
-    });
-  }
-};
-// controllers/authController.js
-// Check mail + gọi hàm gửi mã otp
-const forgotPassword = asyncErrorHandler(async (req, res, next) => {
-  const user = await db.User.findOne({ where: { email: req.body.email } });
-
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await checkUserExist({ email });
   if (!user) {
     return res.status(404).json({ message: "No user found with this email." });
   }
-  const otp = `${Math.floor(1000 + Math.random() * 9000)}`; // OTP 4 chữ số
+  const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
   await sendOtpEmail(user.email, otp);
   res.status(200).json({ message: "OTP has been sent to your email." });
-  user.resetPasswordToken = otp;
-  user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 phút
-  await user.save();
-});
+  await saveUser(user, otp);
+};
 
-// Hàm gửi mã otp
 const sendOtpEmail = async (email, otp) => {
   const mailOptions = {
     from: process.env.MAIL_FROM,
@@ -137,14 +96,11 @@ const sendOtpEmail = async (email, otp) => {
 
   await transporters.sendMail(mailOptions);
 };
-// Hàm kiểm tra mã otp
+
 const verifyOTP = async (req, res) => {
   try {
-    let { id_post, otp_post } = req.body;
-    if (!id_post || !otp_post) {
-      return res.status(400).json({ message: "Email or OTP is missing" });
-    }
-    const user = await db.User.findOne({ where: { id: id_post } });
+    let { email, otp_post } = req.body;
+    const user = await checkUserExist({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -162,30 +118,17 @@ const verifyOTP = async (req, res) => {
   }
 };
 
-// Ham update mat khau moi
 const updatePasswordAfterOTP = async (req, res) => {
   try {
-    const { id, new_password, confirm_password } = req.body;
-    if (!id || !new_password || !confirm_password) {
-      return res
-        .status(400)
-        .json({
-          message: "User ID, new password and confirm password are required",
-        });
-    }
-    if (new_password !== confirm_password) {
-      return res.status(400).json({ message: "Passwords do not match" });
-    }
+    const { email, new_password } = req.body;
     const hashedPassword = await bcrypt.hash(new_password, 10);
-    const user = await db.User.findOne({ where: { id: id } });
+    const user = await checkUserExist({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    user.password = hashedPassword;
-    await user.save();
+    await updatePassword(email, hashedPassword);
     res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
-    // Xử lý lỗi nếu có
     console.error(error);
     res.status(500).json({ message: error.message });
   }
@@ -194,7 +137,6 @@ const updatePasswordAfterOTP = async (req, res) => {
 module.exports = {
   createNewUser,
   checkLogin,
-  checkAccountExist,
   forgotPassword,
   verifyOTP,
   updatePasswordAfterOTP,
