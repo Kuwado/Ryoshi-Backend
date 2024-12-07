@@ -7,6 +7,7 @@ const sequelize = require("./config/dbConfig");
 const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRoute");
 const tagRoute = require("./routes/tagRoute");
+const locationRoute = require("./routes/locationRoute");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -31,6 +32,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/v1/users", userRoute);
+app.use("/api/v1/loactions", locationRoute);
 app.use("/api/v1/tags", tagRoute);
 app.use("/api/v1", authRoute);
 
