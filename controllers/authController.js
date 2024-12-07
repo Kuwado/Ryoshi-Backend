@@ -14,8 +14,16 @@ const createNewUser = async (req, res) => {
     if (newUser.message) {
       return res.status(400).json({ error: newUser.message });
     }
+    const token = jwt.sign(
+      { id: userExist.id, role: userExist.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "30d",
+      }
+    );
     res.status(200).json({
       message: "Register successfully",
+      token: token,
     });
   } catch (error) {
     console.log(error);
@@ -129,7 +137,7 @@ const sendOtpEmail = async (email, otp) => {
 
   await transporters.sendMail(mailOptions);
 };
-// Hàm kiểm tra mã otp 
+// Hàm kiểm tra mã otp
 const verifyOTP = async (req, res) => {
   try {
     let { id_post, otp_post } = req.body;
@@ -159,7 +167,11 @@ const updatePasswordAfterOTP = async (req, res) => {
   try {
     const { id, new_password, confirm_password } = req.body;
     if (!id || !new_password || !confirm_password) {
-      return res.status(400).json({ message: "User ID, new password and confirm password are required" });
+      return res
+        .status(400)
+        .json({
+          message: "User ID, new password and confirm password are required",
+        });
     }
     if (new_password !== confirm_password) {
       return res.status(400).json({ message: "Passwords do not match" });
@@ -185,5 +197,5 @@ module.exports = {
   checkAccountExist,
   forgotPassword,
   verifyOTP,
-  updatePasswordAfterOTP
+  updatePasswordAfterOTP,
 };
