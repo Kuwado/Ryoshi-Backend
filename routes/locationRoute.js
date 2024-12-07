@@ -14,3 +14,5 @@ router.get("/:id", authenticateToken, getLocationDetail);
 router.post("/", authenticateToken, insertLocation);
 router.put("/:id", authenticateToken, updateLocationDetail);
 router.delete("/:id", authenticateToken, deleteALocation);
+
+module.exports = router;
