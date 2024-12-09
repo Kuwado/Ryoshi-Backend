@@ -45,7 +45,7 @@ const insertLocation = async (req, res) => {
     };
     const location = await createLocation(locationData);
     res.status(200).json({
-      message: "Add location successfully",
+      message: "ロケーションが正常に追加されました。",
       location: location,
     });
   } catch (error) {
@@ -74,7 +74,7 @@ const updateLocationDetail = async (req, res) => {
       });
     }
     res.status(200).json({
-      message: "Location updated successfully",
+      message: "ロケーションが正常に更新されました。",
     });
   } catch (error) {
     res.status(500).json({
@@ -92,7 +92,7 @@ const deleteALocation = async (req, res) => {
       });
     }
     res.status(200).json({
-      message: "Location deleted successfully",
+      message: "ロケーションが正常に削除されました。",
     });
   } catch (error) {
     res.status(500).json({

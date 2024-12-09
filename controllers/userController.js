@@ -31,18 +31,18 @@ const updateUserInfo = async (req, res) => {
     const count = await updateUser(id, userData);
     if (count > 0) {
       return res.status(200).json({
-        message: "User information updated successfully",
+        message: "ユーザー情報が正常に更新されました。",
       });
     } else
       return res.status(400).json({
-        message: "Users not found or no changes made",
+        message: "ユーザーが見つかりませんでした。",
       });
   } catch (error) {
     return res.status(404).json({
       error:
         error.errors && error.errors.length > 0
           ? error.errors[0].message
-          : "Something went wrong",
+          : "問題が発生しました。",
     });
   }
 };
@@ -54,11 +54,11 @@ const updateAvatar = async (req, res) => {
     const count = await updateAva(id, avatar);
     if (count > 0) {
       return res.status(200).json({
-        message: "Avatar updated successfully",
+        message: "アバターが正常に更新されました。",
       });
     } else
       return res.status(400).json({
-        message: "Users not found or no changes made",
+        message: "ユーザーが見つかりませんでした。",
       });
   } catch (error) {
     console.log(error);
@@ -66,7 +66,7 @@ const updateAvatar = async (req, res) => {
       error:
         error.errors && error.errors.length > 0
           ? error.errors[0].message
-          : "Something went wrong",
+          : "問題が発生しました。",
     });
   }
 };
@@ -78,11 +78,11 @@ const updatePassword = async (req, res) => {
     const count = await updatePass(id, password);
     if (count > 0) {
       return res.status(200).json({
-        message: "Password updated successfully",
+        message: "パスワードが正常に更新されました。",
       });
     } else
       return res.status(400).json({
-        message: "Users not found or no changes made",
+        message: "ユーザーが見つかりませんでした。",
       });
   } catch (error) {
     console.log(error);
@@ -90,7 +90,7 @@ const updatePassword = async (req, res) => {
       error:
         error.errors && error.errors.length > 0
           ? error.errors[0].message
-          : "Something went wrong",
+          : "問題が発生しました。",
     });
   }
 };
@@ -103,11 +103,11 @@ const forgotPassword = async (req, res) => {
     const count = await forgotPass(email, password);
     if (count > 0) {
       return res.status(200).json({
-        message: "Password updated successfully",
+        message: "パスワードが正常に更新されました",
       });
     } else
       return res.status(400).json({
-        message: "Users not found or no changes made",
+        message: "ユーザーが見つかりませんでした。",
       });
   } catch (error) {
     console.log(error);
@@ -115,7 +115,7 @@ const forgotPassword = async (req, res) => {
       error:
         error.errors && error.errors.length > 0
           ? error.errors[0].message
-          : "Something went wrong",
+          : "問題が発生しました。",
     });
   }
 };
