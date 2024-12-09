@@ -6,11 +6,21 @@ const getUser = async (id) => {
     attributes: {
       exclude: ["password"],
     },
-    include: {
-      model: db.location,
-      as: "liked_location",
-      through: { attributes: [] },
-    },
+    include: [
+      {
+        model: db.location,
+        as: "liked_location",
+        through: { attributes: [] },
+      },
+      {
+        model: db.location,
+        as: "gone_location",
+        through: {
+          model: db.Gone,
+          attributes: [],
+        },
+      },
+    ],
   });
   return user;
 };
