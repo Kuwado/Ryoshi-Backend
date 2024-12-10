@@ -10,14 +10,17 @@ const getUser = async (id) => {
       {
         model: db.location,
         as: "liked_location",
-        through: { attributes: [] },
+        through: {
+          model: db.Liked,
+          attributes: ["id"],
+        },
       },
       {
         model: db.location,
         as: "gone_location",
         through: {
           model: db.Gone,
-          attributes: [],
+          attributes: ["id"],
         },
       },
     ],
