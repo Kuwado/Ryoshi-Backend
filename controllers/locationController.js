@@ -36,12 +36,14 @@ const getLocationDetail = async (req, res) => {
 
 const insertLocation = async (req, res) => {
   try {
+    console.log("Check files: ", req.files);
     const locationData = {
       ...req.body,
       images:
-        req.files && req.files.length >= 1
-          ? req.files.map((file) => file.filename).join(",")
+        req.files.images && req.files.images.length >= 1
+          ? req.files.images.map((file) => file.filename).join(",")
           : null,
+      avatar: req.files.avatar ? req.files.avatar[0].filename : null,
     };
     const location = await createLocation(locationData);
     res.status(200).json({
@@ -62,9 +64,10 @@ const updateLocationDetail = async (req, res) => {
       locationData = {
         ...req.body,
         images:
-          req.files && req.files.length >= 1
-            ? req.files.map((file) => file.filename).join(",")
+          req.files.images && req.files.images.length >= 1
+            ? req.files.images.map((file) => file.filename).join(",")
             : null,
+        avatar: req.files.avatar ? req.files.avatar[0].filename : null,
       };
     } else locationData = req.body;
     const count = await updateLocation(req.params.id, locationData);

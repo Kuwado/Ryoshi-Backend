@@ -76,6 +76,9 @@ module.exports = (sequelize, DataTypes) => {
       child_price: {
         type: DataTypes.FLOAT,
       },
+      avatar: {
+        type: DataTypes.TEXT,
+      },
       images: {
         type: DataTypes.TEXT,
       },
