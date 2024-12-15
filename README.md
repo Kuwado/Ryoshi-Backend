@@ -20,8 +20,9 @@
 1. Chạy câu lệnh `npm i`
 2. Kiểm tra xem file .env.example có gì mới không để thêm các biến môi trường vào file .env của mình
 3. Chạy câu lệnh `npx sequelize-cli db:migrate`
-4. Chạy câu lệnh `npx sequelize-cli db:seed:all`
-5. Cuối cùng chạy câu lệnh `npm start`
+4. Chạy câu lệnh `npx sequelize-cli db:seed:undo:all`
+5. Chạy câu lệnh `npx sequelize-cli db:seed:all`
+6. Cuối cùng chạy câu lệnh `npm start`
 
 Nếu có lỗi, hãy liên hệ chat gpt hoặc đội ngũ f2 backend để nhanh chóng fix được lỗi
 Nếu bất lực quá có thể chạy câu lệnh `npx sequelize-cli db:drop` để xóa databse, sau đó chạy `npx sequelize-cli db:create` để tạo lại db và cuối cùng chạy `npx sequelize-cli db:migrate` tạo lại các bảng
