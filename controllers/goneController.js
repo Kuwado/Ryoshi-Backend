@@ -4,7 +4,7 @@ const insertLocationToGone = async (req, res) => {
   try {
     const gone = await insertGone(req.body);
     res.status(200).json({
-      message: "Add location to the gone list",
+      message: "行った場所リストに追加しました。",
       gone: gone,
     });
   } catch (error) {
@@ -19,11 +19,11 @@ const destroyAGone = async (req, res) => {
     const count = await deleteGone(req.params.id);
     if (count === 0) {
       return res.status(400).json({
-        message: "Location not found",
+        message: "場所が見つかりませんでした。",
       });
     }
     res.status(200).json({
-      message: "Remove location from gone list",
+      message: "行った場所リストから削除しました。",
     });
   } catch (error) {
     res.status(500).json({
