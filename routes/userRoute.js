@@ -8,10 +8,12 @@ const {
   updateAvatar,
   updatePassword,
   forgotPassword,
+  getListUsers,
   getDistanceFromLocation,
 } = require("../controllers/userController");
 
 route.put("/forgotPassword", forgotPassword);
+route.get("/", authenticateToken, getListUsers);
 route.get("/:id", authenticateToken, getUserInfo);
 route.put("/:id", authenticateToken, updateUserInfo);
 route.put("/password/:id", authenticateToken, updatePassword);

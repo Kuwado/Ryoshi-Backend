@@ -4,10 +4,26 @@ const {
   updateAva,
   updatePass,
   forgotPass,
+  getAllUsers,
 } = require("../queries/userQuery");
 const { getLocations } = require("../queries/locationQuery");
 const bcrypt = require("bcrypt");
 const getDistance = require("../utils/distanceMiddleware");
+
+const getListUsers = async (req, res) => {
+  try {
+    const users = await getAllUsers();
+    return res.status(200).json({
+      message: "Get list users",
+      users: users,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
 const getUserInfo = async (req, res) => {
   const id = req.params.id;
@@ -133,6 +149,17 @@ const getDistanceFromLocation = async (req, res) => {
         location_id: location.location_id,
         name: location.name,
         address: location.address,
+        description: location.description,
+        type: location.type,
+        open_time: location.open_time,
+        close_time: location.close_time,
+        age_start: location.age_start,
+        age_end: location.age_end,
+        adult_price: location.adult_price,
+        child_price: location.child_price,
+        images: location.images,
+        number_tourist: location.number_tourist,
+        avatar: location.avatar,
         distance: distance,
       });
     }
@@ -154,4 +181,5 @@ module.exports = {
   updatePassword,
   forgotPassword,
   getDistanceFromLocation,
+  getListUsers,
 };
