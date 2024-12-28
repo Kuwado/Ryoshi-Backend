@@ -4,7 +4,7 @@ const createALike = async (req, res) => {
   try {
     const like = await insertLike(req.body);
     res.status(200).json({
-      message: "LAdd to liked location",
+      message: "お気に入りに追加しました。",
       like: like,
     });
   } catch (error) {
@@ -19,11 +19,11 @@ const removeLike = async (req, res) => {
     const count = await deleteLike(req.params.id);
     if (count > 0) {
       res.status(200).json({
-        message: "Removed from liked location",
+        message: "お気に入りから削除しました。",
       });
     } else {
       res.status(404).json({
-        message: "Not found",
+        message: "お気に入りが見つかりませんでした。",
       });
     }
   } catch (error) {
