@@ -5,6 +5,8 @@ const {
   createLocation,
   deleteLocation,
 } = require("../queries/locationQuery");
+const { getUser } = require("../queries/userQuery");
+const getDistance = require("../utils/distanceMiddleware");
 
 const getListLocations = async (req, res) => {
   try {
@@ -26,6 +28,23 @@ const getLocationDetail = async (req, res) => {
     res.status(200).json({
       message: "Get location detail",
       location: location,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const getLocationDetailWithUser = async (req, res) => {
+  try {
+    const location = await getALocation(req.params.id);
+    const user = await getUser(req.body.user_id);
+    const distance = await getDistance(location.address, user.address);
+    res.status(200).json({
+      message: "Get location detail with user (distance)",
+      location: location,
+      distance: distance,
     });
   } catch (error) {
     res.status(500).json({
@@ -110,4 +129,5 @@ module.exports = {
   insertLocation,
   deleteALocation,
   updateLocationDetail,
+  getLocationDetailWithUser,
 };

@@ -5,6 +5,7 @@ const {
   getLocationDetail,
   insertLocation,
   deleteALocation,
+  getLocationDetailWithUser,
   updateLocationDetail,
 } = require("../controllers/locationController");
 const authenticateToken = require("../middlewares/authMiddleware");
@@ -16,6 +17,7 @@ const uploadFileImg = upload.fields([
 
 router.get("/", authenticateToken, getListLocations);
 router.get("/:id", authenticateToken, getLocationDetail);
+router.get("/:id/withDistance", authenticateToken, getLocationDetailWithUser);
 router.post("/", authenticateToken, uploadFileImg, insertLocation);
 router.put("/:id", authenticateToken, uploadFileImg, updateLocationDetail);
 router.delete("/:id", authenticateToken, deleteALocation);
